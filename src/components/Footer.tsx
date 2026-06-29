@@ -22,7 +22,7 @@ export function Footer({ locale, dict }: FooterProps) {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-10">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-wider text-brand-300">
                 {dict.footer.product}
@@ -69,7 +69,7 @@ export function Footer({ locale, dict }: FooterProps) {
                 </li>
               </ul>
             </div>
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <h3 className="text-xs font-bold uppercase tracking-wider text-brand-300">
                 {dict.footer.legal}
               </h3>

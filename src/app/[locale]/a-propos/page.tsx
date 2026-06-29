@@ -39,13 +39,13 @@ export default async function AboutPage({ params }: PageProps) {
         </div>
 
         <div className="mt-14 grid gap-8 lg:grid-cols-2">
-          <div className="card p-8 animate-fade-in-up">
+          <div className="card p-6 sm:p-8 animate-fade-in-up">
             <h2 className="text-xl font-bold text-brand-300">{about.missionTitle}</h2>
             <p className="mt-4 text-sm leading-relaxed text-tamrix-muted">
               {about.missionText}
             </p>
           </div>
-          <div className="card p-8 animate-fade-in-up">
+          <div className="card p-6 sm:p-8 animate-fade-in-up">
             <h2 className="text-xl font-bold text-brand-300">{about.valuesTitle}</h2>
             <ul className="mt-4 space-y-4">
               {about.values.map((value) => (
@@ -79,11 +79,11 @@ export default async function AboutPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="card mt-16 p-10 text-center animate-fade-in-up">
+        <div className="card mt-16 p-6 text-center sm:p-10 animate-fade-in-up">
           <h2 className="text-xl font-bold text-tamrix-text">{about.ctaTitle}</h2>
           <Link
             href={localizedPath(loc, "/configurateur")}
-            className="btn-primary mt-6 inline-flex px-8 py-3"
+            className="btn-primary mt-6 inline-flex w-full px-8 py-3 sm:w-auto"
           >
             {about.ctaButton}
           </Link>

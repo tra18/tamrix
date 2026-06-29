@@ -71,7 +71,7 @@ export function CatalogueClient({
               key={cat}
               type="button"
               onClick={() => setFilter(cat)}
-              className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              className={`rounded-lg px-3 py-2 text-xs font-semibold transition sm:px-4 sm:text-sm ${
                 filter === cat
                   ? "bg-brand-300 text-tamrix-bg shadow-glow"
                   : "border border-tamrix-border bg-tamrix-surface text-tamrix-muted hover:border-brand-300/40 hover:text-brand-300"

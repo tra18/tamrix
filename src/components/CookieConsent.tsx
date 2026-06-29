@@ -45,7 +45,7 @@ export function CookieConsent({ locale, dict }: CookieConsentProps) {
             {dict.cookies.learnMore}
           </Link>
         </p>
-        <button type="button" onClick={accept} className="btn-primary shrink-0 px-6 py-2.5">
+        <button type="button" onClick={accept} className="btn-primary w-full shrink-0 px-6 py-2.5 sm:w-auto">
           {dict.cookies.accept}
         </button>
       </div>

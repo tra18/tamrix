@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontFamilySans } from "./src/lib/fonts";
 
 const config: Config = {
   content: [
@@ -35,8 +36,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: [...fontFamilySans],
+        display: [...fontFamilySans],
       },
       boxShadow: {
         glow: "0 0 20px rgba(112, 209, 255, 0.25)",

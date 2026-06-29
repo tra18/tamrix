@@ -1,13 +1,9 @@
 import type { Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   themeColor: "#050A0F",
 };
 
@@ -18,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans`}>{children}</body>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   );
 }

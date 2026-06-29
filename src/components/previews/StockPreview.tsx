@@ -40,7 +40,7 @@ export function StockPreview() {
         )}
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-tamrix-border">
+      <div className="table-scroll rounded-lg border border-tamrix-border">
         <table className="w-full text-left text-xs">
           <thead className="bg-tamrix-bg text-tamrix-muted">
             <tr>

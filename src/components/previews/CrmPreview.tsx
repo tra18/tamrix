@@ -35,7 +35,7 @@ export function CrmPreview() {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {[
           { icon: Users, label: "Clients actifs", value: "148", color: "text-tamrix-text" },
           { icon: TrendingUp, label: "Pipeline", value: "60 500 €", color: "text-brand-300" },
@@ -55,8 +55,9 @@ export function CrmPreview() {
         Cliquez sur une carte pour avancer dans le pipeline
       </p>
 
-      <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
-        {columns.map((col) => (
+      <div className="-mx-1 overflow-x-auto px-1 sm:mx-0 sm:overflow-visible sm:px-0">
+        <div className="grid min-w-[28rem] grid-cols-2 gap-2 lg:min-w-0 lg:grid-cols-4">
+          {columns.map((col) => (
           <div key={col.id} className={`rounded-lg border border-tamrix-border p-2 ${col.color}`}>
             <h4 className="mb-2 text-xs font-semibold text-tamrix-muted">{col.label}</h4>
             <div className="space-y-2">
@@ -82,7 +83,8 @@ export function CrmPreview() {
                 ))}
             </div>
           </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

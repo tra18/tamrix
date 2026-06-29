@@ -281,7 +281,7 @@ export function AdminDashboard() {
             {counts.quotesNew} devis et {counts.ordersNew} commandes en attente
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={tab === "quotes" ? exportQuotesCsv : exportOrdersCsv}
@@ -289,7 +289,7 @@ export function AdminDashboard() {
             title="Exporter CSV"
           >
             <Download className="h-4 w-4" />
-            CSV
+            <span className="hidden sm:inline">CSV</span>
           </button>
           <button
             type="button"
@@ -299,9 +299,9 @@ export function AdminDashboard() {
           >
             <RefreshCw className="h-4 w-4" />
           </button>
-          <button type="button" onClick={logout} className="btn-secondary px-4 py-2">
+          <button type="button" onClick={logout} className="btn-secondary px-3 py-2 sm:px-4">
             <LogOut className="h-4 w-4" />
-            Déconnexion
+            <span className="hidden sm:inline">Déconnexion</span>
           </button>
         </div>
       </div>
@@ -329,7 +329,7 @@ export function AdminDashboard() {
         ))}
       </div>
 
-      <div className="relative mt-4 max-w-md">
+      <div className="relative mt-4 w-full max-w-md">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-tamrix-muted" />
         <input
           type="search"
@@ -363,101 +363,163 @@ export function AdminDashboard() {
         {loading ? (
           <p className="p-8 text-center text-tamrix-muted">Chargement...</p>
         ) : tab === "quotes" ? (
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-tamrix-border bg-tamrix-elevated text-xs text-tamrix-muted">
-              <tr>
-                <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3">Entreprise</th>
-                <th className="px-4 py-3">Contact</th>
-                <th className="px-4 py-3">Complexité</th>
-                <th className="px-4 py-3">Statut</th>
-              </tr>
-            </thead>
-            <tbody>
+          <>
+            <div className="divide-y divide-tamrix-border md:hidden">
               {visibleQuotes.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-tamrix-muted">
-                    Aucune demande
-                  </td>
-                </tr>
+                <p className="px-4 py-8 text-center text-tamrix-muted">
+                  Aucune demande
+                </p>
               ) : (
                 visibleQuotes.map((q) => (
-                  <tr
+                  <button
                     key={q.id}
+                    type="button"
                     onClick={() => openQuote(q.id)}
-                    className="cursor-pointer border-b border-tamrix-border/50 transition hover:bg-brand-300/5"
+                    className="w-full px-4 py-4 text-left transition hover:bg-brand-300/5"
                   >
-                    <td className="px-4 py-3 text-tamrix-muted">
-                      {formatDate(q.createdAt)}
-                    </td>
-                    <td className="px-4 py-3 font-medium">{q.company}</td>
-                    <td className="px-4 py-3">
-                      <p>{q.contactName}</p>
-                      <p className="text-xs text-tamrix-muted">{q.email}</p>
-                    </td>
-                    <td className="px-4 py-3 capitalize text-brand-300">
-                      {q.complexity}
-                    </td>
-                    <td className="px-4 py-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="font-medium text-tamrix-text">{q.company}</p>
                       <StatusBadge status={q.status} />
-                    </td>
-                  </tr>
+                    </div>
+                    <p className="mt-1 text-sm text-tamrix-muted">{q.contactName}</p>
+                    <p className="mt-1 text-xs text-tamrix-muted">{q.email}</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                      <span className="text-tamrix-muted">{formatDate(q.createdAt)}</span>
+                      <span className="capitalize text-brand-300">{q.complexity}</span>
+                    </div>
+                  </button>
                 ))
               )}
-            </tbody>
-          </table>
+            </div>
+            <div className="table-scroll hidden md:block">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-tamrix-border bg-tamrix-elevated text-xs text-tamrix-muted">
+                  <tr>
+                    <th className="px-4 py-3">Date</th>
+                    <th className="px-4 py-3">Entreprise</th>
+                    <th className="px-4 py-3">Contact</th>
+                    <th className="px-4 py-3">Complexité</th>
+                    <th className="px-4 py-3">Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visibleQuotes.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-4 py-8 text-center text-tamrix-muted">
+                        Aucune demande
+                      </td>
+                    </tr>
+                  ) : (
+                    visibleQuotes.map((q) => (
+                      <tr
+                        key={q.id}
+                        onClick={() => openQuote(q.id)}
+                        className="cursor-pointer border-b border-tamrix-border/50 transition hover:bg-brand-300/5"
+                      >
+                        <td className="px-4 py-3 text-tamrix-muted">
+                          {formatDate(q.createdAt)}
+                        </td>
+                        <td className="px-4 py-3 font-medium">{q.company}</td>
+                        <td className="px-4 py-3">
+                          <p>{q.contactName}</p>
+                          <p className="text-xs text-tamrix-muted">{q.email}</p>
+                        </td>
+                        <td className="px-4 py-3 capitalize text-brand-300">
+                          {q.complexity}
+                        </td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={q.status} />
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-tamrix-border bg-tamrix-elevated text-xs text-tamrix-muted">
-              <tr>
-                <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3">Application</th>
-                <th className="px-4 py-3">Entreprise</th>
-                <th className="px-4 py-3">Formule</th>
-                <th className="px-4 py-3">Statut</th>
-              </tr>
-            </thead>
-            <tbody>
+          <>
+            <div className="divide-y divide-tamrix-border md:hidden">
               {visibleOrders.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-tamrix-muted">
-                    Aucune commande
-                  </td>
-                </tr>
+                <p className="px-4 py-8 text-center text-tamrix-muted">
+                  Aucune commande
+                </p>
               ) : (
                 visibleOrders.map((o) => (
-                  <tr
+                  <button
                     key={o.id}
+                    type="button"
                     onClick={() => openOrder(o.id)}
-                    className="cursor-pointer border-b border-tamrix-border/50 transition hover:bg-brand-300/5"
+                    className="w-full px-4 py-4 text-left transition hover:bg-brand-300/5"
                   >
-                    <td className="px-4 py-3 text-tamrix-muted">
-                      {formatDate(o.createdAt)}
-                    </td>
-                    <td className="px-4 py-3 font-medium text-brand-300">
-                      {o.appName}
-                    </td>
-                    <td className="px-4 py-3">
-                      <p>{o.company}</p>
-                      <p className="text-xs text-tamrix-muted">{o.contactName}</p>
-                    </td>
-                    <td className="px-4 py-3 capitalize">{o.plan}</td>
-                    <td className="px-4 py-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="font-medium text-brand-300">{o.appName}</p>
                       <StatusBadge status={o.status} />
-                    </td>
-                  </tr>
+                    </div>
+                    <p className="mt-1 text-sm text-tamrix-text">{o.company}</p>
+                    <p className="mt-1 text-xs text-tamrix-muted">{o.contactName}</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                      <span className="text-tamrix-muted">{formatDate(o.createdAt)}</span>
+                      <span className="capitalize text-tamrix-muted">{o.plan}</span>
+                    </div>
+                  </button>
                 ))
               )}
-            </tbody>
-          </table>
+            </div>
+            <div className="table-scroll hidden md:block">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-tamrix-border bg-tamrix-elevated text-xs text-tamrix-muted">
+                  <tr>
+                    <th className="px-4 py-3">Date</th>
+                    <th className="px-4 py-3">Application</th>
+                    <th className="px-4 py-3">Entreprise</th>
+                    <th className="px-4 py-3">Formule</th>
+                    <th className="px-4 py-3">Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visibleOrders.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-4 py-8 text-center text-tamrix-muted">
+                        Aucune commande
+                      </td>
+                    </tr>
+                  ) : (
+                    visibleOrders.map((o) => (
+                      <tr
+                        key={o.id}
+                        onClick={() => openOrder(o.id)}
+                        className="cursor-pointer border-b border-tamrix-border/50 transition hover:bg-brand-300/5"
+                      >
+                        <td className="px-4 py-3 text-tamrix-muted">
+                          {formatDate(o.createdAt)}
+                        </td>
+                        <td className="px-4 py-3 font-medium text-brand-300">
+                          {o.appName}
+                        </td>
+                        <td className="px-4 py-3">
+                          <p>{o.company}</p>
+                          <p className="text-xs text-tamrix-muted">{o.contactName}</p>
+                        </td>
+                        <td className="px-4 py-3 capitalize">{o.plan}</td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={o.status} />
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 
       {(selectedQuote || selectedOrder) && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4 sm:items-center">
-          <div className="card max-h-[90vh] w-full max-w-2xl overflow-y-auto p-6 shadow-glow-lg">
-            <div className="flex items-start justify-between">
-              <h2 className="text-lg font-bold text-tamrix-text">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-3 sm:items-center sm:p-4">
+          <div className="card max-h-[92vh] w-full max-w-2xl overflow-y-auto p-4 shadow-glow-lg sm:max-h-[90vh] sm:p-6">
+            <div className="flex items-start justify-between gap-3">
+              <h2 className="min-w-0 flex-1 text-base font-bold text-tamrix-text sm:text-lg">
                 {selectedQuote
                   ? `Devis — ${selectedQuote.company}`
                   : `Commande — ${selectedOrder!.appName}`}
@@ -571,14 +633,14 @@ export function AdminDashboard() {
               </div>
             </div>
 
-            <div className="mt-6 flex justify-end gap-2">
+            <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
               <button
                 type="button"
                 onClick={() => {
                   setSelectedQuote(null);
                   setSelectedOrder(null);
                 }}
-                className="btn-ghost"
+                className="btn-ghost w-full sm:w-auto"
               >
                 Annuler
               </button>
@@ -586,7 +648,7 @@ export function AdminDashboard() {
                 type="button"
                 onClick={saveDetail}
                 disabled={saving}
-                className="btn-primary disabled:opacity-60"
+                className="btn-primary w-full disabled:opacity-60 sm:w-auto"
               >
                 {saving ? "Enregistrement..." : "Enregistrer"}
               </button>

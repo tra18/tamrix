@@ -51,13 +51,13 @@ export default async function ApercuPage({ params }: PageProps) {
         </Link>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-5">
-          <div className="lg:col-span-3">
+          <div className="order-2 lg:order-1 lg:col-span-3">
             <AppPreview type={app.previewType} appName={app.name} dict={dict} />
           </div>
 
-          <div className="lg:col-span-2 animate-fade-in-up">
+          <div className="order-1 lg:order-2 lg:col-span-2 animate-fade-in-up">
             <span className="badge">{dict.categories[app.category]}</span>
-            <h1 className="mt-4 text-3xl font-bold text-tamrix-text">
+            <h1 className="mt-4 text-2xl font-bold text-tamrix-text sm:text-3xl">
               {app.name}
             </h1>
             <p className="mt-3 text-tamrix-muted">{app.description}</p>

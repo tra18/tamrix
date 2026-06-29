@@ -22,20 +22,20 @@ export function AppPreview({ type, appName, dict }: AppPreviewProps) {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-brand-300/20 bg-tamrix-elevated shadow-glow-lg animate-fade-in-up">
-      <div className="flex items-center gap-2 border-b border-tamrix-border bg-tamrix-bg px-4 py-3">
+      <div className="flex flex-wrap items-center gap-2 border-b border-tamrix-border bg-tamrix-bg px-3 py-2.5 sm:px-4 sm:py-3">
         <div className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
         </div>
-        <span className="ml-2 text-xs font-medium text-tamrix-muted">
+        <span className="min-w-0 flex-1 truncate text-xs font-medium text-tamrix-muted">
           {interpolate(dict.preview.previewOf, { name: appName })}
         </span>
-        <span className="ml-auto rounded border border-brand-300/30 bg-brand-300/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-300">
+        <span className="hidden rounded border border-brand-300/30 bg-brand-300/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-300 sm:inline">
           {dict.preview.interactiveDemo}
         </span>
       </div>
-      <div className="min-h-[420px] bg-tamrix-surface p-4">
+      <div className="min-h-[320px] bg-tamrix-surface p-3 sm:min-h-[420px] sm:p-4">
         {guide && (
           <PreviewGuide
             steps={guide.steps}

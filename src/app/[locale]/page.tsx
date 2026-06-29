@@ -28,7 +28,7 @@ export default async function HomePage({ params }: PageProps) {
         <div className="absolute inset-0 bg-hero-glow" />
         <div className="absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 shimmer-line origin-center animate-line-grow" />
 
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-28 lg:px-8">
           <div className="mx-auto max-w-4xl text-center animate-hero-content">
             <Link
               href={localizedPath(loc, "/")}
@@ -60,18 +60,18 @@ export default async function HomePage({ params }: PageProps) {
               {dict.home.subtitle}
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
-              <Link href={localizedPath(loc, "/configurateur")} className="btn-primary px-8 py-3.5">
+            <div className="mt-10 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4">
+              <Link href={localizedPath(loc, "/configurateur")} className="btn-primary w-full px-8 py-3.5 sm:w-auto">
                 <ClipboardList className="h-4 w-4" />
                 {dict.home.ctaConfigurator}
               </Link>
-              <Link href={localizedPath(loc, "/catalogue")} className="btn-secondary px-8 py-3.5">
+              <Link href={localizedPath(loc, "/catalogue")} className="btn-secondary w-full px-8 py-3.5 sm:w-auto">
                 {dict.home.ctaCatalogue}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={localizedPath(loc, "/applications/crm-pro/apercu")}
-                className="btn-ghost px-8 py-3.5"
+                className="btn-ghost w-full px-8 py-3.5 sm:w-auto"
               >
                 <Eye className="h-4 w-4" />
                 {dict.home.ctaPreview}
@@ -107,7 +107,7 @@ export default async function HomePage({ params }: PageProps) {
 
       <section className="border-y border-tamrix-border bg-tamrix-surface/50 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="card-hover mx-auto flex max-w-4xl flex-col items-center gap-6 p-8 text-center sm:flex-row sm:text-left animate-fade-in-up">
+          <div className="card-hover mx-auto flex max-w-4xl flex-col items-center gap-6 p-6 text-center sm:flex-row sm:p-8 sm:text-left animate-fade-in-up">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-brand-300/20 bg-brand-300/10 text-brand-300 shadow-glow">
               <ClipboardList className="h-7 w-7" />
             </div>
@@ -119,7 +119,7 @@ export default async function HomePage({ params }: PageProps) {
                 {dict.home.ctaConfiguratorDesc}
               </p>
             </div>
-            <Link href={localizedPath(loc, "/configurateur")} className="btn-primary shrink-0 px-6 py-3">
+            <Link href={localizedPath(loc, "/configurateur")} className="btn-primary w-full shrink-0 px-6 py-3 sm:w-auto">
               {dict.nav.configurateur}
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -129,14 +129,14 @@ export default async function HomePage({ params }: PageProps) {
 
       <section className="border-b border-tamrix-border bg-tamrix-surface/50 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between animate-fade-in-up">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between animate-fade-in-up">
             <div>
               <h2 className="section-title">{dict.home.popularTitle}</h2>
               <p className="section-subtitle">{dict.home.popularSubtitle}</p>
             </div>
             <Link
               href={localizedPath(loc, "/catalogue")}
-              className="hidden text-sm font-semibold text-brand-300 transition hover:text-white sm:block"
+              className="text-sm font-semibold text-brand-300 transition hover:text-white sm:shrink-0"
             >
               {dict.home.seeAll}
             </Link>
@@ -177,17 +177,17 @@ export default async function HomePage({ params }: PageProps) {
             {dict.home.ctaFinalTitle}
           </h2>
           <p className="mt-3 text-tamrix-muted">{dict.home.ctaFinalSubtitle}</p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-8 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:mx-auto sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-4">
             <Link
               href={localizedPath(loc, "/configurateur")}
-              className="btn-primary px-10 py-3.5"
+              className="btn-primary w-full px-10 py-3.5 sm:w-auto"
             >
               {dict.home.ctaConfigurator}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href={localizedPath(loc, "/catalogue")}
-              className="btn-ghost px-10 py-3.5"
+              className="btn-ghost w-full px-10 py-3.5 sm:w-auto"
             >
               {dict.home.ctaFinalButton}
             </Link>

@@ -226,12 +226,15 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
             style={{ width: `${((step + 1) / cfg.steps.length) * 100}%` }}
           />
         </div>
-        <h2 className="mt-6 text-xl font-bold text-tamrix-text">
+        <h2 className="mt-6 text-lg font-bold text-tamrix-text sm:text-xl">
           {cfg.steps[step].title}
         </h2>
+        <p className="mt-1 text-center text-xs font-semibold uppercase tracking-wide text-brand-300 sm:hidden">
+          {cfg.steps[step].label}
+        </p>
       </div>
 
-      <div className="card animate-fade-in-up p-6 sm:p-8">
+      <div className="card animate-fade-in-up p-4 sm:p-8">
         {/* Step 1 — Context */}
         {step === 0 && (
           <div className="space-y-6">
@@ -518,7 +521,7 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
               </div>
               <p className="mt-1 text-sm text-tamrix-muted">{cfg.step5.specSubtitle}</p>
 
-              <div className="mt-4 space-y-4 rounded-xl border border-tamrix-border bg-tamrix-bg p-5 font-mono text-xs leading-relaxed text-tamrix-muted sm:text-sm">
+              <div className="mt-4 space-y-4 rounded-xl border border-tamrix-border bg-tamrix-bg p-5 text-xs leading-relaxed text-tamrix-muted sm:text-sm">
                 <div>
                   <p className="mb-2 font-bold text-brand-300">
                     {cfg.step5.specSections.project}
@@ -634,12 +637,12 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
             </ul>
           </div>
         )}
-        <div className="mt-8 flex items-center justify-between border-t border-tamrix-border pt-6">
+        <div className="mt-8 flex flex-col-reverse gap-3 border-t border-tamrix-border pt-6 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
             onClick={() => setStep((s) => s - 1)}
             disabled={step === 0}
-            className="btn-ghost disabled:invisible"
+            className="btn-ghost w-full justify-center sm:w-auto disabled:invisible"
           >
             <ArrowLeft className="h-4 w-4" />
             {cfg.nav.back}
@@ -650,7 +653,7 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
               type="button"
               onClick={() => setStep((s) => s + 1)}
               disabled={!canProceed}
-              className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
+              className="btn-primary w-full justify-center sm:w-auto disabled:cursor-not-allowed disabled:opacity-40"
             >
               {cfg.nav.next}
               <ArrowRight className="h-4 w-4" />
@@ -660,7 +663,7 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
               type="button"
               onClick={handleSubmit}
               disabled={!canProceed || loading}
-              className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
+              className="btn-primary w-full justify-center sm:w-auto disabled:cursor-not-allowed disabled:opacity-40"
             >
               {loading ? cfg.step5.submitting : cfg.nav.submit}
             </button>

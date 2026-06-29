@@ -1,3 +1,5 @@
+import { wrapEmailBody } from "@/lib/fonts";
+
 type EmailPayload = {
   to: string | string[];
   subject: string;
@@ -30,7 +32,7 @@ export async function sendEmail(payload: EmailPayload): Promise<void> {
       from,
       to: recipients,
       subject: payload.subject,
-      html: payload.html,
+      html: wrapEmailBody(payload.html),
       text: payload.text,
     }),
   });

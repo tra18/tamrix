@@ -49,7 +49,7 @@ export default async function CommanderPage({ params }: PageProps) {
         </Link>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-2">
-          <div className="animate-fade-in-up">
+          <div className="order-2 animate-fade-in-up lg:order-1">
             <span className="badge">{dict.order.badge}</span>
             <h1 className="mt-4 text-2xl font-bold text-tamrix-text sm:text-3xl">
               {dict.order.title}
@@ -62,7 +62,7 @@ export default async function CommanderPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div>
+          <div className="order-1 lg:order-2">
             <OrderForm app={app} locale={loc} dict={dict} />
           </div>
         </div>

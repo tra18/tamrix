@@ -47,9 +47,9 @@ export function Header({ locale, dict }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-tamrix-border/80 bg-tamrix-bg/85 backdrop-blur-xl animate-fade-in">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Logo locale={locale} size="sm" showText={false} className="relative z-10" />
+        <Logo locale={locale} size="sm" className="relative z-10" />
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.label}
@@ -72,7 +72,7 @@ export function Header({ locale, dict }: HeaderProps) {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2 lg:hidden">
           <LanguageSwitcher locale={locale} />
           <button
             type="button"
@@ -86,7 +86,7 @@ export function Header({ locale, dict }: HeaderProps) {
       </div>
 
       {open && (
-        <div className="border-t border-tamrix-border bg-tamrix-surface px-4 py-4 md:hidden">
+        <div className="border-t border-tamrix-border bg-tamrix-surface px-4 py-4 lg:hidden">
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <Link
