@@ -65,7 +65,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
       <OrganizationJsonLd />
       <SetHtmlLang locale={locale} />
       <Header locale={locale as Locale} dict={dict} />
-      <main className="min-h-screen">{children}</main>
+      <main className="min-h-screen pb-28">{children}</main>
       <Footer locale={locale as Locale} dict={dict} />
       <CookieConsent locale={locale as Locale} dict={dict} />
     </>

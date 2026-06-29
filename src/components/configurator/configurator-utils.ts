@@ -129,6 +129,48 @@ export function buildSpecification(
   return { project, needs, technical, planning };
 }
 
+export function getStepBlockers(
+  step: number,
+  state: ConfiguratorFormState,
+  messages: {
+    project: string;
+    sector: string;
+    companySize: string;
+    description: string;
+    modules: string;
+    users: string;
+    timeline: string;
+    contact: string;
+  }
+): string[] {
+  const blockers: string[] = [];
+
+  switch (step) {
+    case 0:
+      if (!(state.projectSlugs.length > 0 || state.customProject)) {
+        blockers.push(messages.project);
+      }
+      if (!state.sector) blockers.push(messages.sector);
+      if (!state.companySize) blockers.push(messages.companySize);
+      if (state.description.trim().length < 20) blockers.push(messages.description);
+      break;
+    case 1:
+      if (state.modules.length === 0) blockers.push(messages.modules);
+      break;
+    case 2:
+      if (!state.userCount) blockers.push(messages.users);
+      break;
+    case 3:
+      if (!state.timeline) blockers.push(messages.timeline);
+      break;
+    case 4:
+      if (!canProceedStep(4, state)) blockers.push(messages.contact);
+      break;
+  }
+
+  return blockers;
+}
+
 export function canProceedStep(step: number, state: ConfiguratorFormState): boolean {
   switch (step) {
     case 0:

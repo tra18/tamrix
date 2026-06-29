@@ -20,6 +20,7 @@ import {
   buildSpecification,
   canProceedStep,
   estimateComplexity,
+  getStepBlockers,
   initialFormState,
   slugToModules,
   type ConfiguratorFormState,
@@ -74,6 +75,11 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
   );
 
   const complexity = useMemo(() => estimateComplexity(form), [form]);
+  const canProceed = canProceedStep(step, form);
+  const stepBlockers = useMemo(
+    () => getStepBlockers(step, form, cfg.blockers),
+    [step, form, cfg.blockers]
+  );
   const spec = useMemo(
     () => buildSpecification(form, cfg, dict.apps),
     [form, cfg, dict.apps]
@@ -179,7 +185,7 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-4xl pb-32">
       {draftNotice && (
         <div className="mb-6 flex flex-col gap-3 rounded-xl border border-brand-300/30 bg-brand-300/10 p-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-tamrix-muted">{cfg.step5.draftRestored}</p>
@@ -317,8 +323,14 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
                 className="input-field mt-1 resize-none"
                 placeholder={cfg.step1.descriptionPlaceholder}
               />
-              <p className="mt-1 text-xs text-tamrix-muted">
-                {form.description.length}/20 min.
+              <p
+                className={`mt-1 text-xs ${
+                  form.description.trim().length >= 20
+                    ? "text-emerald-400"
+                    : "text-amber-400"
+                }`}
+              >
+                {form.description.length}/20 caractères minimum
               </p>
             </div>
           </div>
@@ -612,6 +624,16 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
             {error}
           </p>
         )}
+        {!canProceed && stepBlockers.length > 0 && (
+          <div className="mt-6 rounded-lg border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
+            <p className="font-medium">{cfg.nav.completeHint}</p>
+            <ul className="mt-2 list-inside list-disc space-y-1 text-amber-200/90">
+              {stepBlockers.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="mt-8 flex items-center justify-between border-t border-tamrix-border pt-6">
           <button
             type="button"
@@ -627,8 +649,8 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
             <button
               type="button"
               onClick={() => setStep((s) => s + 1)}
-              disabled={!canProceedStep(step, form)}
-              className="btn-primary disabled:opacity-40"
+              disabled={!canProceed}
+              className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
             >
               {cfg.nav.next}
               <ArrowRight className="h-4 w-4" />
@@ -637,8 +659,8 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={!canProceedStep(4, form) || loading}
-              className="btn-primary disabled:opacity-40"
+              disabled={!canProceed || loading}
+              className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
             >
               {loading ? cfg.step5.submitting : cfg.nav.submit}
             </button>

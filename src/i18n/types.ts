@@ -226,6 +226,17 @@ export interface ConfiguratorDictionary {
     back: string;
     next: string;
     submit: string;
+    completeHint: string;
+  };
+  blockers: {
+    project: string;
+    sector: string;
+    companySize: string;
+    description: string;
+    modules: string;
+    users: string;
+    timeline: string;
+    contact: string;
   };
   none: string;
   yes: string;
