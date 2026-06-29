@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RequestStatus {
+  NEW
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+model QuoteRequest {
+  id              String        @id @default(cuid())
+  createdAt       DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime      @updatedAt @db.Timestamptz(6)
+  status          RequestStatus @default(NEW)
+  adminNotes      String?       @db.Text
+  locale          String        @db.VarChar(5)
+  company         String        @db.VarChar(200)
+  contactName     String        @db.VarChar(200)
+  email           String        @db.VarChar(320)
+  phone           String?       @db.VarChar(30)
+  projectSlugs    String[]
+  customProject   Boolean       @default(false)
+  sector          String        @db.VarChar(50)
+  companySize     String        @db.VarChar(20)
+  description     String        @db.Text
+  modules         String[]
+  userCount       String        @db.VarChar(20)
+  integrations    String[]
+  needsMobile     Boolean       @default(false)
+  needsMultiSite  Boolean       @default(false)
+  existingSystems String?       @db.Text
+  timeline        String        @db.VarChar(20)
+  complexity      String        @db.VarChar(20)
+  specification   Json
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([email])
+  @@map("quote_requests")
+}
+
+model OrderRequest {
+  id          String        @id @default(cuid())
+  createdAt   DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime      @updatedAt @db.Timestamptz(6)
+  status      RequestStatus @default(NEW)
+  adminNotes  String?       @db.Text
+  locale      String        @db.VarChar(5)
+  appSlug     String        @db.VarChar(80)
+  appName     String        @db.VarChar(200)
+  company     String        @db.VarChar(200)
+  contactName String        @db.VarChar(200)
+  email       String        @db.VarChar(320)
+  phone       String?       @db.VarChar(30)
+  plan        String        @db.VarChar(20)
+  notes       String?       @db.Text
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([email])
+  @@index([appSlug])
+  @@map("order_requests")
+}
