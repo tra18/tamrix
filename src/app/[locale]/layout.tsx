@@ -8,6 +8,7 @@ import { SetHtmlLang } from "@/components/SetHtmlLang";
 import { locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getAppUrl } from "@/lib/site-url";
+import { siteIcons } from "@/lib/site-icons";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -33,6 +34,8 @@ export async function generateMetadata({
       template: `%s | Tamrix`,
     },
     description: dict.meta.description,
+    applicationName: "Tamrix",
+    icons: siteIcons,
     openGraph: {
       title: dict.meta.title,
       description: dict.meta.description,

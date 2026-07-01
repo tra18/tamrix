@@ -3,19 +3,32 @@ import { prisma } from "@/lib/prisma";
 import { notifyAdminNewOrder } from "@/lib/notify-admin";
 import { notifyClientOrderConfirmation } from "@/lib/notify-client";
 import { orderRequestSchema } from "@/lib/validation";
+import { getAppBySlug } from "@/data/applications";
+import { getDictionary } from "@/i18n/get-dictionary";
+import type { Locale } from "@/i18n/config";
 import { checkRateLimit, getClientIp, isHoneypotFilled } from "@/lib/rate-limit";
-import { handleApiError, jsonError } from "@/lib/api-utils";
+import { handleApiError, rateLimitResponse } from "@/lib/api-utils";
+import { assertTurnstile } from "@/lib/require-turnstile";
 
 export async function POST(request: NextRequest) {
   try {
     const ip = getClientIp(request);
     const rate = await checkRateLimit(`order:${ip}`);
     if (!rate.allowed) {
-      return jsonError("Too many requests", 429);
+      return rateLimitResponse(rate.retryAfterSec);
     }
 
     const body = await request.json();
-    const data = orderRequestSchema.parse(body);
+    const parsed = orderRequestSchema.parse(body);
+    const dict = await getDictionary(parsed.locale as Locale);
+    const catalogApp = getAppBySlug(parsed.appSlug, dict);
+    const data = {
+      ...parsed,
+      appName: catalogApp?.name ?? parsed.appSlug,
+    };
+
+    const captchaError = await assertTurnstile(request, parsed.turnstileToken);
+    if (captchaError) return captchaError;
 
     if (isHoneypotFilled(data.website)) {
       return NextResponse.json({ id: "filtered" }, { status: 201 });

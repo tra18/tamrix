@@ -14,6 +14,42 @@ enum RequestStatus {
   ARCHIVED
 }
 
+enum AdminRole {
+  ADMIN
+  SUPER_ADMIN
+}
+
+model AdminUser {
+  id           String         @id @default(cuid())
+  email        String         @unique @db.VarChar(320)
+  name         String         @db.VarChar(200)
+  passwordHash String         @db.VarChar(200)
+  totpSecret   String?        @db.VarChar(100)
+  mfaEnabled   Boolean        @default(false)
+  active       Boolean        @default(true)
+  role         AdminRole      @default(ADMIN)
+  createdAt    DateTime       @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime       @updatedAt @db.Timestamptz(6)
+  sessions     AdminSession[]
+
+  @@map("admin_users")
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime  @db.Timestamptz(6)
+  revokedAt DateTime? @db.Timestamptz(6)
+  ip        String?   @db.VarChar(64)
+  userAgent String?   @db.VarChar(500)
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("admin_sessions")
+}
+
 model QuoteRequest {
   id              String        @id @default(cuid())
   createdAt       DateTime      @default(now()) @db.Timestamptz(6)

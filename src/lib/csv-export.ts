@@ -1,10 +1,12 @@
+import { sanitizeCsvCell } from "@/lib/security/sanitize";
+
 export function downloadCsv(
   filename: string,
   headers: string[],
   rows: string[][]
 ): void {
   const escape = (value: string) =>
-    `"${value.replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
+    `"${sanitizeCsvCell(value).replace(/"/g, '""')}"`;
 
   const lines = [
     headers.map(escape).join(";"),

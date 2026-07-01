@@ -2,6 +2,7 @@ import type { Locale } from "@/i18n/config";
 import type { OrderRequestInput, QuoteRequestInput } from "@/lib/validation";
 import { escapeHtml, sendEmail } from "@/lib/email";
 import { getAppUrl } from "@/lib/site-url";
+import { sanitizeEmailSubject } from "@/lib/security/sanitize";
 
 const copy = {
   fr: {
@@ -156,7 +157,7 @@ export async function notifyClientOrderConfirmation(
 
   await sendEmail({
     to: data.email,
-    subject: t.subject(data.appName),
+    subject: sanitizeEmailSubject(t.subject(data.appName)),
     html,
     text,
   });

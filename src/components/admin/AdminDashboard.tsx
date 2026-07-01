@@ -10,8 +10,10 @@ import {
   Package,
   RefreshCw,
   Search,
+  Shield,
   X,
 } from "lucide-react";
+import Link from "next/link";
 import { downloadCsv } from "@/lib/csv-export";
 
 type RequestStatus = "NEW" | "IN_PROGRESS" | "COMPLETED" | "ARCHIVED";
@@ -299,6 +301,10 @@ export function AdminDashboard() {
           >
             <RefreshCw className="h-4 w-4" />
           </button>
+          <Link href="/admin/security" className="btn-secondary inline-flex px-3 py-2 sm:px-4">
+            <Shield className="h-4 w-4" />
+            <span className="hidden sm:inline">Sécurité</span>
+          </Link>
           <button type="button" onClick={logout} className="btn-secondary px-3 py-2 sm:px-4">
             <LogOut className="h-4 w-4" />
             <span className="hidden sm:inline">Déconnexion</span>

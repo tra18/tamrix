@@ -8,7 +8,8 @@ type RouteContext = { params: Promise<{ id: string }> };
 
 export async function GET(request: NextRequest, context: RouteContext) {
   try {
-    if (!requireAdminApi(request)) return unauthorizedResponse();
+    const auth = await requireAdminApi(request);
+    if (!auth) return unauthorizedResponse();
 
     const { id } = await context.params;
     const quote = await prisma.quoteRequest.findUnique({ where: { id } });
@@ -25,7 +26,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
 export async function PATCH(request: NextRequest, context: RouteContext) {
   try {
-    if (!requireAdminApi(request)) return unauthorizedResponse();
+    const auth = await requireAdminApi(request);
+    if (!auth) return unauthorizedResponse();
 
     const { id } = await context.params;
     const body = adminUpdateSchema.parse(await request.json());

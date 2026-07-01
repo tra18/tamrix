@@ -33,8 +33,8 @@ export default async function HomePage({ params }: PageProps) {
         <div className="absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 shimmer-line origin-center animate-line-grow" />
 
         <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-20">
-            <div className="text-center lg:text-left animate-hero-content">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-x-16 lg:gap-y-8">
+            <div className="animate-hero-content text-center lg:col-start-1 lg:row-start-1 lg:text-left">
               <Link
                 href={localizedPath(loc, "/")}
                 className="inline-block transition-opacity hover:opacity-80"
@@ -64,28 +64,28 @@ export default async function HomePage({ params }: PageProps) {
               <p className="mx-auto mt-6 max-w-2xl text-lg text-tamrix-muted sm:text-xl lg:mx-0">
                 {dict.home.subtitle}
               </p>
-
-              <div className="mt-10 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4 lg:justify-start">
-                <Link href={localizedPath(loc, "/configurateur")} className="btn-primary w-full px-8 py-3.5 sm:w-auto">
-                  <ClipboardList className="h-4 w-4" />
-                  {dict.home.ctaConfigurator}
-                </Link>
-                <Link href={localizedPath(loc, "/catalogue")} className="btn-secondary w-full px-8 py-3.5 sm:w-auto">
-                  {dict.home.ctaCatalogue}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href={localizedPath(loc, "/applications/crm-pro/apercu")}
-                  className="btn-ghost w-full px-8 py-3.5 sm:w-auto"
-                >
-                  <Eye className="h-4 w-4" />
-                  {dict.home.ctaPreview}
-                </Link>
-              </div>
             </div>
 
-            <div className="animate-fade-in-up lg:animate-fade-in">
+            <div className="animate-fade-in-up lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-center">
               <HeroLaptopCoder copy={dict.home.codeShowcase} />
+            </div>
+
+            <div className="flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4 lg:col-start-1 lg:row-start-2 lg:justify-start">
+              <Link href={localizedPath(loc, "/configurateur")} className="btn-primary w-full px-8 py-3.5 sm:w-auto">
+                <ClipboardList className="h-4 w-4" />
+                {dict.home.ctaConfigurator}
+              </Link>
+              <Link href={localizedPath(loc, "/catalogue")} className="btn-secondary w-full px-8 py-3.5 sm:w-auto">
+                {dict.home.ctaCatalogue}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href={localizedPath(loc, "/applications/crm-pro/apercu")}
+                className="btn-ghost w-full px-8 py-3.5 sm:w-auto"
+              >
+                <Eye className="h-4 w-4" />
+                {dict.home.ctaPreview}
+              </Link>
             </div>
           </div>
         </div>

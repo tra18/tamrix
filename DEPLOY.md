@@ -65,8 +65,11 @@ git push -u origin main
 | Variable | Exemple / note |
 |----------|----------------|
 | `DATABASE_URL` | URL Neon avec `sslmode=require` |
-| `ADMIN_PASSWORD` | Mot de passe fort (min. 8 car.) |
-| `ADMIN_SECRET` | `openssl rand -base64 32` |
+| `ADMIN_EMAIL` | `admin@tmrix.com` | E-mail du premier compte super-admin (créé auto si table vide) |
+| `ADMIN_PASSWORD` | `openssl rand -base64 32` | Mot de passe admin (≥ 16 car.) |
+| `ADMIN_SECRET` | `openssl rand -base64 32` | Secret JWT sessions (≥ 32 car., différent du mot de passe) |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Clé site Cloudflare Turnstile | Captcha formulaires publics + login admin |
+| `TURNSTILE_SECRET_KEY` | Clé secrète Turnstile | Vérification serveur du captcha |
 | `ADMIN_NOTIFICATION_EMAIL` | Votre e-mail pour les alertes |
 | `RESEND_API_KEY` | `re_...` |
 | `EMAIL_FROM` | `Tamrix <onboarding@resend.dev>` |
@@ -141,10 +144,72 @@ Les e-mails de test fonctionnent sans ça ; la prod avec votre marque nécessite
 ### 6.5 Vérifications après mise en ligne
 
 - [ ] `https://tmrix.com` → redirige vers `/fr` ou `/en`
+- [ ] `https://www.tmrix.com` → même comportement (ou redirection vers le domaine principal)
 - [ ] `https://tmrix.com/fr/configurateur` — formulaire OK
 - [ ] `https://tmrix.com/admin/login` — admin OK
 - [ ] E-mail devis → lien admin pointe vers `https://tmrix.com/admin?...`
 - [ ] `https://tmrix.com/sitemap.xml` — URLs en `tmrix.com`
+
+### 6.6 HTTPS (SSL) — Vercel + Infomaniak
+
+Sur **Vercel**, le certificat SSL (Let’s Encrypt) est **automatique** une fois le domaine validé. Aucun Certbot ni Nginx à gérer côté Infomaniak pour l’hébergement Vercel.
+
+#### DNS Infomaniak (zone `tmrix.com`)
+
+Copiez les valeurs **exactes** affichées dans Vercel → **Settings** → **Domains** (elles peuvent différer légèrement par projet) :
+
+| Type | Nom | Valeur typique |
+|------|-----|----------------|
+| **A** | `@` | `76.76.21.21` |
+| **CNAME** | `www` | `xxxx.vercel-dns-017.com` (projet-spécifique) |
+
+Ne pas utiliser l’ancien CNAME générique `cname.vercel-dns.com` si Vercel affiche une cible projet-spécifique.
+
+#### Vercel — domaines à ajouter
+
+1. [vercel.com](https://vercel.com) → projet **tamrix** → **Settings** → **Domains**
+2. Ajoutez **les deux** :
+   - `tmrix.com`
+   - `www.tmrix.com`
+3. Attendez le statut **Valid** (coche verte) pour **chaque** domaine.
+4. Choisissez le **domaine principal** (ex. `tmrix.com`) : l’autre redirigera automatiquement en HTTPS.
+
+#### Variable `APP_URL`
+
+Une fois HTTPS actif sur le domaine principal :
+
+| Variable | Valeur |
+|----------|--------|
+| `APP_URL` | `https://tmrix.com` *(ou `https://www.tmrix.com` si vous gardez www comme principal)* |
+
+Puis **Redeploy** le projet.
+
+#### Vérifier HTTPS depuis un terminal
+
+```bash
+curl -sI http://tmrix.com | grep -i location
+curl -sI https://tmrix.com | head -5
+curl -sI https://www.tmrix.com | head -5
+```
+
+Attendu :
+- `http://` → redirection **308** vers `https://`
+- `https://` → **200** ou **307** vers `/fr`, **sans** erreur certificat
+
+#### Problème courant : certificat valide seulement sur `www`
+
+Symptôme : `https://www.tmrix.com` OK, mais `https://tmrix.com` affiche « connexion non privée » / certificat émis pour `www.tmrix.com` uniquement.
+
+**Correctif :**
+
+1. Vercel → **Domains** → vérifier que `tmrix.com` (sans www) est bien listé et **Valid**
+2. Si statut **Invalid** ou **Pending** : vérifier l’enregistrement **A** `@` → `76.76.21.21` chez Infomaniak
+3. Supprimer `tmrix.com` du projet Vercel, attendre 1 min, le **ré-ajouter** → Vercel regénère le certificat
+4. Propagation DNS : jusqu’à 1 h (parfois instantané)
+
+#### Redirection HTTP → HTTPS
+
+Gérée **automatiquement** par Vercel (réponse **308**). Rien à coder dans le projet.
 
 ---
 
@@ -164,7 +229,28 @@ Les e-mails de test fonctionnent sans ça ; la prod avec votre marque nécessite
 | Build Prisma | `DATABASE_URL` + SSL Neon |
 | Pas d’e-mails | Logs Vercel ou config Resend |
 | Admin refusé | `ADMIN_PASSWORD` + Redeploy |
-| Domaine invalide / SSL | DNS propagé ? Enregistrements Vercel exacts ? |
+| Domaine invalide / SSL | DNS propagé ? Enregistrements Vercel exacts ? Voir § 6.6 |
+| Certificat OK sur www seulement | Ajouter / valider `tmrix.com` dans Vercel Domains (§ 6.6) |
+| Formulaires 429 en prod | Configurer **Upstash Redis** (`UPSTASH_REDIS_REST_*`) sur Vercel |
+| Build prod échoue au démarrage | `ADMIN_PASSWORD` ≥ 16 car. et `ADMIN_SECRET` ≥ 32 car. (pas les placeholders) |
+
+---
+
+## 8. Sécurité (résumé)
+
+- **Rate limiting** : Upstash Redis **obligatoire en production**.
+- **Captcha** : Cloudflare Turnstile sur configurateur, commandes et login admin.
+- **Admin** : comptes multi-utilisateurs en base, sessions révocables, MFA TOTP (Google Authenticator).
+- **Premier compte** : `ADMIN_EMAIL` + `ADMIN_PASSWORD` créent le super-admin au premier démarrage.
+- **Panneau sécurité** : `/admin/security` — activer MFA, révoquer sessions, créer des admins (super-admin).
+- **En-têtes HTTP** : CSP, HSTS, X-Frame-Options, etc.
+
+### Turnstile (Cloudflare)
+
+1. [dash.cloudflare.com](https://dash.cloudflare.com) → **Turnstile** → **Add site**
+2. Domaine : `tmrix.com` / `www.tmrix.com`
+3. Copier **Site Key** → `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+4. Copier **Secret Key** → `TURNSTILE_SECRET_KEY`
 
 ---
 

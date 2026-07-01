@@ -5,7 +5,7 @@ export const dictionary: Dictionary = {
   meta: {
     title: "Tamrix — Applications métier sur mesure",
     description:
-      "Commandez des applications métier professionnelles avec aperçu interactif avant achat. CRM, stock, facturation, RH et plus.",
+      "Commandez des applications métier et services digitaux avec aperçu interactif. CRM, SEO, e-commerce, IA, hébergement et plus.",
   },
   nav: {
     home: "Accueil",
@@ -21,7 +21,7 @@ export const dictionary: Dictionary = {
     title: "Commandez. Testez.",
     titleHighlight: "Déployez.",
     subtitle:
-      "Découvrez nos applications professionnelles en aperçu interactif avant de commander. CRM, stock, facturation, RH et bien plus.",
+      "Applications métier, marketing digital, e-commerce, IA et hébergement — testez en aperçu interactif avant de commander.",
     ctaCatalogue: "Voir le catalogue",
     ctaPreview: "Essayer un aperçu",
     codeShowcase: {
@@ -154,6 +154,70 @@ export const dictionary: Dictionary = {
           "Naviguez dans le calendrier hebdomadaire.",
           "Cliquez sur un créneau libre pour créer une réservation.",
           "Confirmez pour voir la mise à jour du planning.",
+        ],
+      },
+      website: {
+        hint: "Visualisez la refonte de votre site",
+        steps: [
+          "Comparez l'aperçu « Avant refonte » et « Version refondue ».",
+          "Cliquez sur le bouton pour basculer entre les deux versions.",
+          "Observez l'amélioration du design, du responsive et des appels à l'action.",
+        ],
+      },
+      branding: {
+        hint: "Explorez une identité visuelle",
+        steps: [
+          "Parcourez les palettes de couleurs proposées.",
+          "Cliquez sur un style pour voir la charte s'appliquer.",
+          "Imaginez votre logo et vos supports de marque.",
+        ],
+      },
+      "seo-ranking": {
+        hint: "Simulez une optimisation SEO",
+        steps: [
+          "Consultez l'état des audits techniques et contenus.",
+          "Cliquez sur « Optimiser » pour lancer la simulation.",
+          "Observez l'amélioration de visibilité estimée.",
+        ],
+      },
+      "google-ads": {
+        hint: "Pilotez une campagne publicitaire",
+        steps: [
+          "Consultez les indicateurs clés (clics, CTR, coût).",
+          "Cliquez sur « Lancer la campagne ».",
+          "Observez les métriques se mettre à jour.",
+        ],
+      },
+      marketing: {
+        hint: "Activez vos canaux marketing",
+        steps: [
+          "Sélectionnez les canaux à activer (social, newsletter, blog).",
+          "Cliquez pour ajouter ou retirer un canal.",
+          "Construisez votre stratégie multicanale.",
+        ],
+      },
+      ecommerce: {
+        hint: "Testez une boutique en ligne",
+        steps: [
+          "Parcourez la fiche produit démo.",
+          "Cliquez sur « Ajouter au panier ».",
+          "Vérifiez le compteur panier se mettre à jour.",
+        ],
+      },
+      ia: {
+        hint: "Découvrez l'automatisation IA",
+        steps: [
+          "Lisez le scénario d'automatisation affiché.",
+          "Cliquez sur « Simuler l'automatisation ».",
+          "Observez le workflow se dérouler étape par étape.",
+        ],
+      },
+      hosting: {
+        hint: "Surveillez votre hébergement",
+        steps: [
+          "Vérifiez le statut du serveur (en ligne).",
+          "Consultez les indicateurs SSL et sauvegardes.",
+          "Visualisez la fiabilité de l'infrastructure.",
         ],
       },
     },
@@ -335,6 +399,9 @@ export const dictionary: Dictionary = {
     rh: "Ressources humaines",
     finance: "Finance",
     logistique: "Logistique",
+    web: "Web & digital",
+    marketing: "Marketing",
+    tech: "Tech & infra",
   },
   apps: {
     "crm-pro": {
@@ -414,6 +481,110 @@ export const dictionary: Dictionary = {
         "Synchronisation Google Calendar",
       ],
       highlights: ["Moins de no-shows", "Widget intégrable", "Multi-sites"],
+    },
+    "refonte-sites": {
+      name: "Refonte de sites",
+      tagline: "Modernisez votre présence en ligne",
+      description:
+        "Refonte complète de site vitrine ou corporate : design sur mesure, expérience mobile, performance et référencement naturel.",
+      features: [
+        "Audit UX et design responsive",
+        "Maquettes interactives avant développement",
+        "Optimisation SEO et temps de chargement",
+        "Migration de contenu et mise en ligne",
+      ],
+      highlights: ["Image professionnelle", "Mobile-first", "Visibilité Google"],
+    },
+    "branding-identite": {
+      name: "Branding & Identité",
+      tagline: "Construisez une marque mémorable",
+      description:
+        "Création ou refonte d'identité visuelle : logo, charte graphique, typographies, palettes et déclinaisons sur tous vos supports.",
+      features: [
+        "Atelier de positionnement de marque",
+        "Logo et charte graphique complète",
+        "Templates réseaux sociaux et print",
+        "Guide d'utilisation de la marque",
+      ],
+      highlights: ["Cohérence visuelle", "Différenciation", "Supports clés en main"],
+    },
+    "referencement-seo": {
+      name: "Référencement SEO",
+      tagline: "Gagnez en visibilité sur Google",
+      description:
+        "Stratégie SEO technique et éditoriale : audit, mots-clés, optimisation on-page, netlinking et suivi de positions.",
+      features: [
+        "Audit technique et sémantique",
+        "Optimisation contenus et balises",
+        "Suivi de positions et rapports",
+        "Recommandations mensuelles",
+      ],
+      highlights: ["Trafic organique", "ROI durable", "Reporting transparent"],
+    },
+    "google-ads-sea": {
+      name: "Google Ads & SEA",
+      tagline: "Acquérez des clients via la publicité",
+      description:
+        "Gestion de campagnes Google Ads : Search, Display, Shopping et remarketing avec optimisation du budget et des conversions.",
+      features: [
+        "Configuration et structuration des campagnes",
+        "Rédaction d'annonces performantes",
+        "Suivi conversions et ROAS",
+        "Optimisation continue du budget",
+      ],
+      highlights: ["Résultats mesurables", "Ciblage précis", "Expert certifié"],
+    },
+    "marketing-digital": {
+      name: "Marketing Digital",
+      tagline: "Développez votre audience en ligne",
+      description:
+        "Stratégie marketing multicanale : réseaux sociaux, content marketing, newsletters et campagnes d'acquisition.",
+      features: [
+        "Plan éditorial et calendrier",
+        "Gestion réseaux sociaux",
+        "Newsletters et automation",
+        "Analyse des performances",
+      ],
+      highlights: ["Notoriété", "Engagement", "Leads qualifiés"],
+    },
+    "e-commerce": {
+      name: "E-commerce",
+      tagline: "Vendez en ligne, simplement",
+      description:
+        "Boutique en ligne clé en main : catalogue produits, paiement sécurisé, gestion des commandes et tableaux de bord ventes.",
+      features: [
+        "Catalogue et fiches produits",
+        "Paiement CB et PayPal",
+        "Gestion stocks et commandes",
+        "Tableau de bord ventes",
+      ],
+      highlights: ["Vente 24/7", "Paiement sécurisé", "Évolutif"],
+    },
+    "ia-automatisation": {
+      name: "IA & Automatisation",
+      tagline: "Automatisez vos processus avec l'IA",
+      description:
+        "Intégration d'IA et workflows automatisés : qualification de leads, réponses clients, traitement de documents et agents métier.",
+      features: [
+        "Audit des processus automatisables",
+        "Workflows et agents IA sur mesure",
+        "Intégration CRM et outils existants",
+        "Formation et accompagnement",
+      ],
+      highlights: ["Gain de temps", "Moins d'erreurs", "Scalable"],
+    },
+    hebergement: {
+      name: "Hébergement",
+      tagline: "Infrastructure fiable et sécurisée",
+      description:
+        "Hébergement web et applicatif : serveurs performants, certificat SSL, sauvegardes automatiques et monitoring 24/7.",
+      features: [
+        "Serveurs haute disponibilité",
+        "Certificat SSL inclus",
+        "Sauvegardes quotidiennes",
+        "Support et monitoring",
+      ],
+      highlights: ["99,9 % uptime", "Sécurisé", "Support réactif"],
     },
   },
   configurateur: configurateurFr,

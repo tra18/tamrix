@@ -4,18 +4,22 @@ import { notifyAdminNewQuote } from "@/lib/notify-admin";
 import { notifyClientQuoteConfirmation } from "@/lib/notify-client";
 import { quoteRequestSchema } from "@/lib/validation";
 import { checkRateLimit, getClientIp, isHoneypotFilled } from "@/lib/rate-limit";
-import { handleApiError, jsonError } from "@/lib/api-utils";
+import { handleApiError, rateLimitResponse } from "@/lib/api-utils";
+import { assertTurnstile } from "@/lib/require-turnstile";
 
 export async function POST(request: NextRequest) {
   try {
     const ip = getClientIp(request);
     const rate = await checkRateLimit(`quote:${ip}`);
     if (!rate.allowed) {
-      return jsonError("Too many requests", 429);
+      return rateLimitResponse(rate.retryAfterSec);
     }
 
     const body = await request.json();
     const data = quoteRequestSchema.parse(body);
+
+    const captchaError = await assertTurnstile(request, data.turnstileToken);
+    if (captchaError) return captchaError;
 
     if (isHoneypotFilled(data.website)) {
       return NextResponse.json({ id: "filtered" }, { status: 201 });

@@ -1,9 +1,19 @@
 import { z } from "zod";
 import { locales } from "@/i18n/config";
+import { applicationMeta } from "@/data/applications";
+
+const appSlugs = applicationMeta.map((app) => app.slug) as [string, ...string[]];
 
 const localeSchema = z.enum(locales);
 const emailSchema = z.string().email().max(320).trim().toLowerCase();
-const shortText = z.string().trim().min(1).max(200);
+const safeText = z
+  .string()
+  .trim()
+  .min(1)
+  .max(200)
+  .refine((value) => !/[\r\n\0]/.test(value), {
+    message: "Invalid characters",
+  });
 const optionalPhone = z.string().trim().max(30).optional().or(z.literal(""));
 
 const honeypotSchema = z
@@ -12,13 +22,16 @@ const honeypotSchema = z
   .optional()
   .or(z.literal(""));
 
+const turnstileTokenSchema = z.string().max(2048).optional().or(z.literal(""));
+
 export const quoteRequestSchema = z.object({
   locale: localeSchema,
-  company: shortText,
-  contactName: shortText,
+  company: safeText,
+  contactName: safeText,
   email: emailSchema,
   phone: optionalPhone,
   website: honeypotSchema,
+  turnstileToken: turnstileTokenSchema,
   projectSlugs: z.array(z.string().max(80)).max(10),
   customProject: z.boolean(),
   sector: z.string().trim().min(1).max(50),
@@ -42,13 +55,14 @@ export const quoteRequestSchema = z.object({
 
 export const orderRequestSchema = z.object({
   locale: localeSchema,
-  appSlug: z.string().trim().min(1).max(80),
-  appName: shortText,
-  company: shortText,
-  contactName: shortText,
+  appSlug: z.enum(appSlugs),
+  appName: safeText,
+  company: safeText,
+  contactName: safeText,
   email: emailSchema,
   phone: optionalPhone,
   website: honeypotSchema,
+  turnstileToken: turnstileTokenSchema,
   plan: z.enum(["standard", "pro", "enterprise"]),
   notes: z.string().trim().max(5000).optional().or(z.literal("")),
 });

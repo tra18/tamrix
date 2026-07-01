@@ -1,5 +1,12 @@
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { siteIcons } from "@/lib/site-icons";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.APP_URL?.trim() || "https://www.tmrix.com"),
+  applicationName: "Tamrix",
+  icons: siteIcons,
+};
 
 export const viewport: Viewport = {
   width: "device-width",

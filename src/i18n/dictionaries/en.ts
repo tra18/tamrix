@@ -5,7 +5,7 @@ export const dictionary: Dictionary = {
   meta: {
     title: "Tamrix — Custom business applications",
     description:
-      "Order professional business applications with interactive preview before purchase. CRM, inventory, invoicing, HR and more.",
+      "Order business applications and digital services with interactive preview. CRM, SEO, e-commerce, AI, hosting and more.",
   },
   nav: {
     home: "Home",
@@ -21,7 +21,7 @@ export const dictionary: Dictionary = {
     title: "Order. Preview.",
     titleHighlight: "Deploy.",
     subtitle:
-      "Discover our professional applications with interactive preview before ordering. CRM, inventory, invoicing, HR and more.",
+      "Business apps, digital marketing, e-commerce, AI and hosting — try interactive previews before ordering.",
     ctaCatalogue: "View catalog",
     ctaPreview: "Try a preview",
     codeShowcase: {
@@ -154,6 +154,70 @@ export const dictionary: Dictionary = {
           "Navigate the weekly calendar.",
           "Click an available slot to create a booking.",
           "Confirm to see the schedule update.",
+        ],
+      },
+      website: {
+        hint: "Preview your website redesign",
+        steps: [
+          "Compare the « Before redesign » and « Redesigned version » previews.",
+          "Click the toggle button to switch between both versions.",
+          "Notice the improved design, mobile layout and call-to-action.",
+        ],
+      },
+      branding: {
+        hint: "Explore a visual identity",
+        steps: [
+          "Browse the proposed color palettes.",
+          "Click a style to see the brand guide apply.",
+          "Imagine your logo and brand assets.",
+        ],
+      },
+      "seo-ranking": {
+        hint: "Simulate SEO optimization",
+        steps: [
+          "Review technical and content audit status.",
+          "Click « Optimize » to run the simulation.",
+          "See the estimated visibility improvement.",
+        ],
+      },
+      "google-ads": {
+        hint: "Manage an ad campaign",
+        steps: [
+          "Review key metrics (clicks, CTR, cost).",
+          "Click « Launch campaign ».",
+          "Watch metrics update in real time.",
+        ],
+      },
+      marketing: {
+        hint: "Activate marketing channels",
+        steps: [
+          "Select channels to enable (social, newsletter, blog).",
+          "Click to add or remove a channel.",
+          "Build your multichannel strategy.",
+        ],
+      },
+      ecommerce: {
+        hint: "Try an online store",
+        steps: [
+          "Browse the demo product page.",
+          "Click « Add to cart ».",
+          "Check the cart counter update.",
+        ],
+      },
+      ia: {
+        hint: "Discover AI automation",
+        steps: [
+          "Read the automation scenario displayed.",
+          "Click « Simulate automation ».",
+          "Watch the workflow run step by step.",
+        ],
+      },
+      hosting: {
+        hint: "Monitor your hosting",
+        steps: [
+          "Check server status (online).",
+          "Review SSL and backup indicators.",
+          "See infrastructure reliability at a glance.",
         ],
       },
     },
@@ -335,6 +399,9 @@ export const dictionary: Dictionary = {
     rh: "Human resources",
     finance: "Finance",
     logistique: "Logistics",
+    web: "Web & digital",
+    marketing: "Marketing",
+    tech: "Tech & infra",
   },
   apps: {
     "crm-pro": {
@@ -414,6 +481,110 @@ export const dictionary: Dictionary = {
         "Google Calendar sync",
       ],
       highlights: ["Fewer no-shows", "Embeddable widget", "Multi-location"],
+    },
+    "refonte-sites": {
+      name: "Website Redesign",
+      tagline: "Modernize your online presence",
+      description:
+        "Complete redesign of showcase or corporate websites: custom design, mobile experience, performance and SEO.",
+      features: [
+        "UX audit and responsive design",
+        "Interactive mockups before development",
+        "SEO and page speed optimization",
+        "Content migration and go-live",
+      ],
+      highlights: ["Professional image", "Mobile-first", "Google visibility"],
+    },
+    "branding-identite": {
+      name: "Branding & Identity",
+      tagline: "Build a memorable brand",
+      description:
+        "Brand identity creation or refresh: logo, brand guidelines, typography, color palettes and asset variations.",
+      features: [
+        "Brand positioning workshop",
+        "Logo and complete brand guidelines",
+        "Social and print templates",
+        "Brand usage guide",
+      ],
+      highlights: ["Visual consistency", "Differentiation", "Ready-to-use assets"],
+    },
+    "referencement-seo": {
+      name: "SEO",
+      tagline: "Grow your Google visibility",
+      description:
+        "Technical and content SEO strategy: audit, keywords, on-page optimization, link building and rank tracking.",
+      features: [
+        "Technical and semantic audit",
+        "Content and meta tag optimization",
+        "Rank tracking and reports",
+        "Monthly recommendations",
+      ],
+      highlights: ["Organic traffic", "Long-term ROI", "Transparent reporting"],
+    },
+    "google-ads-sea": {
+      name: "Google Ads & SEA",
+      tagline: "Acquire customers through ads",
+      description:
+        "Google Ads campaign management: Search, Display, Shopping and remarketing with budget and conversion optimization.",
+      features: [
+        "Campaign setup and structure",
+        "High-performing ad copy",
+        "Conversion and ROAS tracking",
+        "Continuous budget optimization",
+      ],
+      highlights: ["Measurable results", "Precise targeting", "Certified expert"],
+    },
+    "marketing-digital": {
+      name: "Digital Marketing",
+      tagline: "Grow your online audience",
+      description:
+        "Multichannel marketing strategy: social media, content marketing, newsletters and acquisition campaigns.",
+      features: [
+        "Editorial plan and calendar",
+        "Social media management",
+        "Newsletters and automation",
+        "Performance analytics",
+      ],
+      highlights: ["Brand awareness", "Engagement", "Qualified leads"],
+    },
+    "e-commerce": {
+      name: "E-commerce",
+      tagline: "Sell online with ease",
+      description:
+        "Turnkey online store: product catalog, secure payment, order management and sales dashboards.",
+      features: [
+        "Product catalog and pages",
+        "Card and PayPal payment",
+        "Inventory and order management",
+        "Sales dashboard",
+      ],
+      highlights: ["24/7 sales", "Secure payment", "Scalable"],
+    },
+    "ia-automatisation": {
+      name: "AI & Automation",
+      tagline: "Automate processes with AI",
+      description:
+        "AI integration and automated workflows: lead qualification, customer replies, document processing and business agents.",
+      features: [
+        "Automation opportunity audit",
+        "Custom workflows and AI agents",
+        "CRM and tool integration",
+        "Training and support",
+      ],
+      highlights: ["Time savings", "Fewer errors", "Scalable"],
+    },
+    hebergement: {
+      name: "Hosting",
+      tagline: "Reliable, secure infrastructure",
+      description:
+        "Web and application hosting: high-performance servers, SSL certificate, automatic backups and 24/7 monitoring.",
+      features: [
+        "High-availability servers",
+        "SSL certificate included",
+        "Daily backups",
+        "Support and monitoring",
+      ],
+      highlights: ["99.9% uptime", "Secure", "Responsive support"],
     },
   },
   configurateur: configurateurEn,

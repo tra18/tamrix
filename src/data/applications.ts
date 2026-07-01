@@ -5,7 +5,10 @@ export type AppCategory =
   | "commercial"
   | "rh"
   | "finance"
-  | "logistique";
+  | "logistique"
+  | "web"
+  | "marketing"
+  | "tech";
 
 export type PreviewType =
   | "crm"
@@ -13,7 +16,15 @@ export type PreviewType =
   | "facturation"
   | "rh"
   | "dossiers"
-  | "reservation";
+  | "reservation"
+  | "website"
+  | "branding"
+  | "seo-ranking"
+  | "google-ads"
+  | "marketing"
+  | "ecommerce"
+  | "ia"
+  | "hosting";
 
 export interface BusinessApp {
   id: string;
@@ -83,6 +94,65 @@ export const applicationMeta: ApplicationMeta[] = [
     category: "commercial",
     previewType: "reservation",
     deliveryDays: 16,
+  },
+  {
+    id: "7",
+    slug: "refonte-sites",
+    category: "web",
+    previewType: "website",
+    deliveryDays: 21,
+    popular: true,
+  },
+  {
+    id: "8",
+    slug: "branding-identite",
+    category: "marketing",
+    previewType: "branding",
+    deliveryDays: 14,
+  },
+  {
+    id: "9",
+    slug: "referencement-seo",
+    category: "marketing",
+    previewType: "seo-ranking",
+    deliveryDays: 14,
+    popular: true,
+  },
+  {
+    id: "10",
+    slug: "google-ads-sea",
+    category: "marketing",
+    previewType: "google-ads",
+    deliveryDays: 7,
+  },
+  {
+    id: "11",
+    slug: "marketing-digital",
+    category: "marketing",
+    previewType: "marketing",
+    deliveryDays: 21,
+  },
+  {
+    id: "12",
+    slug: "e-commerce",
+    category: "commercial",
+    previewType: "ecommerce",
+    deliveryDays: 28,
+    popular: true,
+  },
+  {
+    id: "13",
+    slug: "ia-automatisation",
+    category: "tech",
+    previewType: "ia",
+    deliveryDays: 21,
+  },
+  {
+    id: "14",
+    slug: "hebergement",
+    category: "tech",
+    previewType: "hosting",
+    deliveryDays: 3,
   },
 ];
 

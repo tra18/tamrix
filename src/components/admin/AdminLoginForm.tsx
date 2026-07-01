@@ -2,11 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock } from "lucide-react";
+import { Lock, Shield } from "lucide-react";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim() ?? "";
 
 export function AdminLoginForm() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [totpCode, setTotpCode] = useState("");
+  const [requiresMfa, setRequiresMfa] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -21,32 +28,49 @@ export function AdminLoginForm() {
       return;
     }
 
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setError("Veuillez valider le captcha.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({
+          email,
+          password,
+          totpCode: requiresMfa ? totpCode : undefined,
+          turnstileToken,
+        }),
       });
 
-      if (!res.ok) {
-        const data = (await res.json().catch(() => null)) as {
-          error?: string;
-        } | null;
+      const data = (await res.json().catch(() => null)) as {
+        error?: string;
+        requiresMfa?: boolean;
+      } | null;
 
+      if (res.status === 401 && data?.requiresMfa) {
+        setRequiresMfa(true);
+        setError(null);
+        return;
+      }
+
+      if (!res.ok) {
         if (res.status === 429) {
           setError("Trop de tentatives. Réessayez dans une minute.");
-        } else if (res.status === 503 || data?.error === "Admin not configured") {
-          setError(
-            "Accès admin non configuré. Vérifiez ADMIN_PASSWORD et ADMIN_SECRET dans .env, puis redémarrez npm run dev."
-          );
+        } else if (res.status === 400 && data?.error === "Captcha verification failed") {
+          setError("Validation captcha échouée. Réessayez.");
+          setTurnstileToken("");
+        } else if (res.status === 401 && data?.error === "Invalid MFA code") {
+          setError("Code MFA incorrect.");
+        } else if (res.status === 503) {
+          setError("Connexion temporairement indisponible.");
         } else if (res.status === 401) {
-          setError(
-            "Mot de passe incorrect. Utilisez la valeur ADMIN_PASSWORD de votre fichier .env."
-          );
-        } else if (data?.error === "Invalid request data") {
-          setError("Le mot de passe doit contenir au moins 8 caractères.");
+          setError("Identifiants incorrects.");
         } else {
-          setError("Connexion impossible. Réessayez ou redémarrez le serveur.");
+          setError("Connexion impossible. Réessayez.");
         }
         return;
       }
@@ -75,6 +99,20 @@ export function AdminLoginForm() {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
+            <label htmlFor="email" className="block text-sm text-tamrix-muted">
+              E-mail
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="input-field mt-1"
+            />
+          </div>
+          <div>
             <label htmlFor="password" className="block text-sm text-tamrix-muted">
               Mot de passe
             </label>
@@ -89,6 +127,35 @@ export function AdminLoginForm() {
             />
           </div>
 
+          {requiresMfa && (
+            <div>
+              <label htmlFor="totp" className="flex items-center gap-2 text-sm text-tamrix-muted">
+                <Shield className="h-4 w-4 text-brand-300" />
+                Code MFA (6 chiffres)
+              </label>
+              <input
+                id="totp"
+                type="text"
+                inputMode="numeric"
+                pattern="\d{6}"
+                maxLength={6}
+                value={totpCode}
+                onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, ""))}
+                required
+                autoComplete="one-time-code"
+                className="input-field mt-1 font-mono tracking-widest"
+              />
+            </div>
+          )}
+
+          {TURNSTILE_SITE_KEY && (
+            <TurnstileWidget
+              siteKey={TURNSTILE_SITE_KEY}
+              onToken={setTurnstileToken}
+              onExpire={() => setTurnstileToken("")}
+            />
+          )}
+
           {error && (
             <p className="rounded-lg border border-red-400/30 bg-red-400/10 px-3 py-2 text-sm text-red-400">
               {error}
@@ -100,7 +167,7 @@ export function AdminLoginForm() {
             disabled={loading}
             className="btn-primary w-full py-3 disabled:opacity-60"
           >
-            {loading ? "Connexion..." : "Se connecter"}
+            {loading ? "Connexion..." : requiresMfa ? "Vérifier le code MFA" : "Se connecter"}
           </button>
         </form>
       </div>

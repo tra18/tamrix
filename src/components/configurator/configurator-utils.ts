@@ -206,4 +206,12 @@ export const slugToModules: Record<string, string[]> = {
   "rh-paie": ["rh", "reporting"],
   "suivi-dossiers": ["dossiers", "reporting"],
   "reservation-pro": ["reservation", "reporting"],
+  "refonte-sites": ["refonte-site", "seo", "mobile"],
+  "branding-identite": ["branding", "refonte-site"],
+  "referencement-seo": ["seo", "reporting"],
+  "google-ads-sea": ["google-ads", "reporting"],
+  "marketing-digital": ["marketing-digital", "seo", "reporting"],
+  "e-commerce": ["ecommerce", "facturation", "stock"],
+  "ia-automatisation": ["ia", "api", "reporting"],
+  "hebergement": ["hebergement", "api"],
 };

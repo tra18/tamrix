@@ -1,6 +1,7 @@
 import type { OrderRequestInput, QuoteRequestInput } from "@/lib/validation";
 import { escapeHtml, sendEmail } from "@/lib/email";
 import { getAppUrl } from "@/lib/site-url";
+import { sanitizeEmailSubject } from "@/lib/security/sanitize";
 
 function listItems(values: string[]): string {
   return values.length ? values.join(", ") : "—";
@@ -74,7 +75,7 @@ export async function notifyAdminNewQuote(
 
   await sendEmail({
     to,
-    subject: `[Tamrix] Nouveau devis — ${data.company}`,
+    subject: sanitizeEmailSubject(`[Tamrix] Nouveau devis — ${data.company}`),
     html,
     text,
   });
@@ -126,7 +127,7 @@ export async function notifyAdminNewOrder(
 
   await sendEmail({
     to,
-    subject: `[Tamrix] Nouvelle commande — ${data.appName}`,
+    subject: sanitizeEmailSubject(`[Tamrix] Nouvelle commande — ${data.appName}`),
     html,
     text,
   });

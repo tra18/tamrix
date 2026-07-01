@@ -1,58 +1,21 @@
-import { createHmac, timingSafeEqual } from "crypto";
+import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import type { AdminRole, AdminUser } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { ADMIN_COOKIE, SESSION_MS } from "@/lib/admin-constants";
 
-export const ADMIN_COOKIE = "tamrix_admin_session";
-const SESSION_MS = 8 * 60 * 60 * 1000; // 8 h
+export { ADMIN_COOKIE } from "@/lib/admin-constants";
 
-function getAdminSecret(): string | null {
-  return process.env.ADMIN_SECRET ?? null;
-}
+export type AdminSessionUser = Pick<
+  AdminUser,
+  "id" | "email" | "name" | "role" | "mfaEnabled"
+>;
 
-export function createSessionToken(): string | null {
-  const secret = getAdminSecret();
+function getJwtSecret(): Uint8Array | null {
+  const secret = process.env.ADMIN_SECRET?.trim();
   if (!secret) return null;
-
-  const exp = Date.now() + SESSION_MS;
-  const sig = createHmac("sha256", secret).update(String(exp)).digest("hex");
-  return Buffer.from(JSON.stringify({ exp, sig })).toString("base64url");
-}
-
-export function verifySessionToken(token: string | undefined): boolean {
-  const secret = getAdminSecret();
-  if (!token || !secret) return false;
-
-  try {
-    const { exp, sig } = JSON.parse(
-      Buffer.from(token, "base64url").toString("utf8")
-    ) as { exp: number; sig: string };
-
-    if (typeof exp !== "number" || typeof sig !== "string") return false;
-    if (Date.now() > exp) return false;
-
-    const expected = createHmac("sha256", secret)
-      .update(String(exp))
-      .digest("hex");
-
-    const sigBuf = Buffer.from(sig, "hex");
-    const expBuf = Buffer.from(expected, "hex");
-    if (sigBuf.length !== expBuf.length) return false;
-
-    return timingSafeEqual(sigBuf, expBuf);
-  } catch {
-    return false;
-  }
-}
-
-export function verifyAdminPassword(input: string): boolean {
-  const password = process.env.ADMIN_PASSWORD;
-  if (!password) return false;
-
-  const a = Buffer.from(input);
-  const b = Buffer.from(password);
-  if (a.length !== b.length) return false;
-
-  return timingSafeEqual(a, b);
+  return new TextEncoder().encode(secret);
 }
 
 export function sessionCookieOptions() {
@@ -65,15 +28,122 @@ export function sessionCookieOptions() {
   };
 }
 
-export async function isAdminAuthenticated(): Promise<boolean> {
-  const cookieStore = await cookies();
-  return verifySessionToken(cookieStore.get(ADMIN_COOKIE)?.value);
+export async function createAdminSession(
+  user: AdminSessionUser,
+  meta?: { ip?: string; userAgent?: string }
+): Promise<string | null> {
+  const secret = getJwtSecret();
+  if (!secret) return null;
+
+  const expiresAt = new Date(Date.now() + SESSION_MS);
+  const session = await prisma.adminSession.create({
+    data: {
+      userId: user.id,
+      expiresAt,
+      ip: meta?.ip,
+      userAgent: meta?.userAgent,
+    },
+  });
+
+  return new SignJWT({ sid: session.id, uid: user.id, role: user.role })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(Math.floor(expiresAt.getTime() / 1000))
+    .sign(secret);
 }
 
-export function requireAdminApi(request: NextRequest): boolean {
-  return verifySessionToken(request.cookies.get(ADMIN_COOKIE)?.value);
+export async function verifyAdminSessionToken(
+  token: string | undefined
+): Promise<{ user: AdminSessionUser; sessionId: string } | null> {
+  const secret = getJwtSecret();
+  if (!token || !secret) return null;
+
+  try {
+    const { payload } = await jwtVerify(token, secret);
+    const sessionId = payload.sid;
+    const userId = payload.uid;
+    if (typeof sessionId !== "string" || typeof userId !== "string") return null;
+
+    const session = await prisma.adminSession.findFirst({
+      where: {
+        id: sessionId,
+        userId,
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
+        user: { active: true },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+            mfaEnabled: true,
+          },
+        },
+      },
+    });
+
+    if (!session) return null;
+
+    return { user: session.user, sessionId: session.id };
+  } catch {
+    return null;
+  }
+}
+
+export async function revokeAdminSession(sessionId: string): Promise<void> {
+  await prisma.adminSession.updateMany({
+    where: { id: sessionId, revokedAt: null },
+    data: { revokedAt: new Date() },
+  });
+}
+
+export async function revokeAllUserSessions(
+  userId: string,
+  exceptSessionId?: string
+): Promise<void> {
+  await prisma.adminSession.updateMany({
+    where: {
+      userId,
+      revokedAt: null,
+      ...(exceptSessionId ? { id: { not: exceptSessionId } } : {}),
+    },
+    data: { revokedAt: new Date() },
+  });
+}
+
+export async function isAdminAuthenticated(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const auth = await verifyAdminSessionToken(
+    cookieStore.get(ADMIN_COOKIE)?.value
+  );
+  return Boolean(auth);
+}
+
+export async function getAuthenticatedAdmin(): Promise<{
+  user: AdminSessionUser;
+  sessionId: string;
+} | null> {
+  const cookieStore = await cookies();
+  return verifyAdminSessionToken(cookieStore.get(ADMIN_COOKIE)?.value);
+}
+
+export async function requireAdminApi(
+  request: NextRequest
+): Promise<{ user: AdminSessionUser; sessionId: string } | null> {
+  return verifyAdminSessionToken(request.cookies.get(ADMIN_COOKIE)?.value);
 }
 
 export function unauthorizedResponse() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+}
+
+export function forbiddenResponse() {
+  return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+}
+
+export function isSuperAdmin(role: AdminRole): boolean {
+  return role === "SUPER_ADMIN";
 }

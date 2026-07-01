@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_COOKIE } from "./lib/admin-constants";
+import { verifySessionTokenEdge } from "./lib/admin-session-edge";
 import { defaultLocale, locales, type Locale } from "./i18n/config";
 
 function getPreferredLocale(request: NextRequest): Locale {
@@ -7,8 +9,40 @@ function getPreferredLocale(request: NextRequest): Locale {
   return defaultLocale;
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/api/admin")) {
+    if (
+      pathname === "/api/admin/login" ||
+      pathname === "/api/admin/logout"
+    ) {
+      return NextResponse.next();
+    }
+
+    const valid = await verifySessionTokenEdge(
+      request.cookies.get(ADMIN_COOKIE)?.value
+    );
+    if (!valid) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    return NextResponse.next();
+  }
+
+  if (
+    pathname.startsWith("/admin") &&
+    !pathname.startsWith("/admin/login")
+  ) {
+    const valid = await verifySessionTokenEdge(
+      request.cookies.get(ADMIN_COOKIE)?.value
+    );
+    if (!valid) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
 
   if (
     pathname.startsWith("/_next") ||
@@ -32,5 +66,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|favicon.ico|logo.png|.*\\..*).*)"],
+  matcher: ["/((?!_next|api|favicon.ico|logo.png|.*\\..*).*)", "/api/admin/:path*"],
 };

@@ -10,6 +10,9 @@ import type { AppCategory, BusinessApp } from "@/data/applications";
 const categoryKeys: (AppCategory | "all")[] = [
   "all",
   "commercial",
+  "marketing",
+  "web",
+  "tech",
   "gestion",
   "finance",
   "rh",

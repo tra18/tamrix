@@ -1,16 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdminApi, unauthorizedResponse } from "@/lib/admin-auth";
+import { adminListQuerySchema } from "@/lib/admin-validation";
 import { handleApiError } from "@/lib/api-utils";
 
 export async function GET(request: NextRequest) {
   try {
-    if (!requireAdminApi(request)) return unauthorizedResponse();
+    const auth = await requireAdminApi(request);
+    if (!auth) return unauthorizedResponse();
 
-    const status = request.nextUrl.searchParams.get("status");
+    const { status } = adminListQuerySchema.parse({
+      status: request.nextUrl.searchParams.get("status") ?? undefined,
+    });
 
     const orders = await prisma.orderRequest.findMany({
-      where: status ? { status: status as never } : undefined,
+      where: status ? { status } : undefined,
       orderBy: { createdAt: "desc" },
       take: 100,
       select: {

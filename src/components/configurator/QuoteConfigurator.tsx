@@ -26,6 +26,9 @@ import {
   type ConfiguratorFormState,
 } from "./configurator-utils";
 import { submitQuoteRequest } from "@/lib/api-client";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim() ?? "";
 
 interface QuoteConfiguratorProps {
   locale: Locale;
@@ -44,6 +47,7 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [website, setWebsite] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [draftNotice, setDraftNotice] = useState(false);
   const [form, setForm] = useState<ConfiguratorFormState>(() => {
     if (!prefillApp || !dict.apps[prefillApp]) return initialFormState;
@@ -128,6 +132,13 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
+
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setError("Veuillez valider le captcha avant l'envoi.");
+      setLoading(false);
+      return;
+    }
+
     try {
       await submitQuoteRequest({
         locale,
@@ -136,6 +147,7 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
         email: form.email,
         phone: form.phone,
         website,
+        turnstileToken,
         projectSlugs: form.projectSlugs,
         customProject: form.customProject,
         sector: form.sector,
@@ -617,6 +629,14 @@ export function QuoteConfigurator({ locale, dict }: QuoteConfiguratorProps) {
               <p className="mt-4 text-center text-xs text-tamrix-muted">
                 {cfg.step5.disclaimer}
               </p>
+              {step === 4 && TURNSTILE_SITE_KEY && (
+                <TurnstileWidget
+                  siteKey={TURNSTILE_SITE_KEY}
+                  onToken={setTurnstileToken}
+                  onExpire={() => setTurnstileToken("")}
+                  className="mt-4"
+                />
+              )}
             </div>
           </div>
         )}

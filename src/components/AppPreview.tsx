@@ -9,6 +9,8 @@ import { FacturationPreview } from "./previews/FacturationPreview";
 import { RhPreview } from "./previews/RhPreview";
 import { DossiersPreview } from "./previews/DossiersPreview";
 import { ReservationPreview } from "./previews/ReservationPreview";
+import { WebsitePreview } from "./previews/WebsitePreview";
+import { ServicePreview } from "./previews/ServicePreview";
 import { PreviewGuide } from "./previews/PreviewGuide";
 
 interface AppPreviewProps {
@@ -66,6 +68,16 @@ function PreviewContent({ type }: { type: PreviewType }) {
       return <DossiersPreview />;
     case "reservation":
       return <ReservationPreview />;
+    case "website":
+      return <WebsitePreview />;
+    case "branding":
+    case "seo-ranking":
+    case "google-ads":
+    case "marketing":
+    case "ecommerce":
+    case "ia":
+    case "hosting":
+      return <ServicePreview variant={type} />;
     default:
       return null;
   }

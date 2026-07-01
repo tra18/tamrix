@@ -8,6 +8,9 @@ import { HoneypotField } from "@/components/HoneypotField";
 import { BusinessApp } from "@/data/applications";
 import { interpolate } from "@/i18n/interpolate";
 import { submitOrderRequest } from "@/lib/api-client";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim() ?? "";
 
 interface OrderFormProps {
   app: BusinessApp;
@@ -20,11 +23,18 @@ export function OrderForm({ app, locale, dict }: OrderFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [contactName, setContactName] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setError("Veuillez valider le captcha avant l'envoi.");
+      setLoading(false);
+      return;
+    }
 
     const fd = new FormData(e.currentTarget);
 
@@ -38,6 +48,7 @@ export function OrderForm({ app, locale, dict }: OrderFormProps) {
         email: String(fd.get("email") ?? ""),
         phone: String(fd.get("phone") ?? ""),
         website: String(fd.get("website") ?? ""),
+        turnstileToken,
         plan: String(fd.get("plan") ?? "standard"),
         notes: String(fd.get("notes") ?? ""),
       });
@@ -160,6 +171,14 @@ export function OrderForm({ app, locale, dict }: OrderFormProps) {
         <p className="rounded-lg border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-400">
           {error}
         </p>
+      )}
+
+      {TURNSTILE_SITE_KEY && (
+        <TurnstileWidget
+          siteKey={TURNSTILE_SITE_KEY}
+          onToken={setTurnstileToken}
+          onExpire={() => setTurnstileToken("")}
+        />
       )}
 
       <button
