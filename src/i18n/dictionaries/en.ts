@@ -11,7 +11,7 @@ export const dictionary: Dictionary = {
     home: "Home",
     catalogue: "Catalog",
     configurateur: "Configurator",
-    process: "How it works",
+    process: "Our approach",
     order: "Order",
     menu: "Menu",
     about: "About",
@@ -24,6 +24,21 @@ export const dictionary: Dictionary = {
       "Discover our professional applications with interactive preview before ordering. CRM, inventory, invoicing, HR and more.",
     ctaCatalogue: "View catalog",
     ctaPreview: "Try a preview",
+    codeShowcase: {
+      filename: "tamrix-app.config.ts",
+      statusTyping: "Writing code…",
+      statusDone: "Application ready to deploy",
+      lines: [
+        "// Building your business application",
+        "export async function buildApp() {",
+        "  const app = await tamrix.create({",
+        '    modules: ["crm", "inventory", "hr"],',
+        '    locale: "en",',
+        "  });",
+        "  await app.deploy(); // ✓ Live",
+        "}",
+      ],
+    },
     features: [
       {
         title: "Interactive preview",
@@ -41,13 +56,28 @@ export const dictionary: Dictionary = {
     popularTitle: "Popular applications",
     popularSubtitle: "The most requested solutions by our clients",
     seeAll: "View all →",
-    processTitle: "How it works",
-    processSubtitle: "From preview to production in 4 steps",
+    processTitle: "A structured end-to-end journey",
+    processSubtitle:
+      "A clear, guided process from discovering our solutions through to go-live.",
+    processBadge: "Methodology",
+    stepLabel: "Step",
     steps: [
-      { title: "Explore", desc: "Browse the catalog and try the interactive preview" },
-      { title: "Order", desc: "Fill out the form with your specific requirements" },
-      { title: "Customize", desc: "Our team adapts the application to your business" },
-      { title: "Deploy", desc: "Delivery, training and go-live" },
+      {
+        title: "Discovery",
+        desc: "Explore the catalog and validate your needs with interactive demos.",
+      },
+      {
+        title: "Scoping",
+        desc: "Define your project in the configurator and receive a tailored quote.",
+      },
+      {
+        title: "Design",
+        desc: "Our team adapts the application to your workflows and organization.",
+      },
+      {
+        title: "Go-live",
+        desc: "Delivery, user training, and support through launch.",
+      },
     ],
     ctaFinalTitle: "Ready to digitize your business?",
     ctaFinalSubtitle: "Start with a free preview, no commitment.",
@@ -157,7 +187,7 @@ export const dictionary: Dictionary = {
     successTitle: "Order sent!",
     successMessage:
       "We received your request for {name}. An advisor will contact you within 24 hours to finalize your project.",
-    errorSubmit: "Submission failed. Please try again or email contact@tamrix.fr",
+    errorSubmit: "Submission failed. Please try again or email contact@tmrix.com",
   },
   footer: {
     tagline:
@@ -240,7 +270,7 @@ export const dictionary: Dictionary = {
       {
         title: "Publisher",
         paragraphs: [
-          "Tamrix — contact@tamrix.fr",
+          "Tamrix — contact@tmrix.com",
           "Website published by Tamrix, business application ordering platform.",
         ],
       },
@@ -279,7 +309,7 @@ export const dictionary: Dictionary = {
       {
         title: "Your rights",
         paragraphs: [
-          "You may request access, correction or deletion of your data at contact@tamrix.fr.",
+          "You may request access, correction or deletion of your data at contact@tmrix.com.",
         ],
       },
       {
@@ -297,7 +327,7 @@ export const dictionary: Dictionary = {
     preview: "Preview",
     order: "Order",
     getQuote: "Get a quote",
-    submitError: "Submission failed. Please try again or email contact@tamrix.fr",
+    submitError: "Submission failed. Please try again or email contact@tmrix.com",
   },
   categories: {
     gestion: "Management",

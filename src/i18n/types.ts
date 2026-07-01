@@ -29,12 +29,20 @@ export interface Dictionary {
     subtitle: string;
     ctaCatalogue: string;
     ctaPreview: string;
+    codeShowcase: {
+      filename: string;
+      statusTyping: string;
+      statusDone: string;
+      lines: string[];
+    };
     features: { title: string; desc: string }[];
     popularTitle: string;
     popularSubtitle: string;
     seeAll: string;
     processTitle: string;
     processSubtitle: string;
+    processBadge: string;
+    stepLabel: string;
     steps: { title: string; desc: string }[];
     ctaFinalTitle: string;
     ctaFinalSubtitle: string;

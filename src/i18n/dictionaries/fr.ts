@@ -11,7 +11,7 @@ export const dictionary: Dictionary = {
     home: "Accueil",
     catalogue: "Catalogue",
     configurateur: "Configurateur",
-    process: "Comment ça marche",
+    process: "Notre méthode",
     order: "Commander",
     menu: "Menu",
     about: "À propos",
@@ -24,6 +24,21 @@ export const dictionary: Dictionary = {
       "Découvrez nos applications professionnelles en aperçu interactif avant de commander. CRM, stock, facturation, RH et bien plus.",
     ctaCatalogue: "Voir le catalogue",
     ctaPreview: "Essayer un aperçu",
+    codeShowcase: {
+      filename: "tamrix-app.config.ts",
+      statusTyping: "Écriture du code en cours…",
+      statusDone: "Application prête au déploiement",
+      lines: [
+        "// Construction de votre application métier",
+        "export async function buildApp() {",
+        '  const app = await tamrix.create({',
+        '    modules: ["crm", "stock", "rh"],',
+        '    locale: "fr",',
+        "  });",
+        "  await app.deploy(); // ✓ Mise en ligne",
+        "}",
+      ],
+    },
     features: [
       {
         title: "Aperçu interactif",
@@ -41,13 +56,28 @@ export const dictionary: Dictionary = {
     popularTitle: "Applications populaires",
     popularSubtitle: "Les solutions les plus demandées par nos clients",
     seeAll: "Tout voir →",
-    processTitle: "Comment ça marche",
-    processSubtitle: "De l'aperçu à la mise en production en 4 étapes",
+    processTitle: "Un parcours maîtrisé de bout en bout",
+    processSubtitle:
+      "Une méthode claire et accompagnée, de la découverte de nos solutions jusqu'à la mise en production.",
+    processBadge: "Méthodologie",
+    stepLabel: "Étape",
     steps: [
-      { title: "Explorer", desc: "Parcourez le catalogue et testez l'aperçu interactif" },
-      { title: "Commander", desc: "Remplissez le formulaire avec vos besoins spécifiques" },
-      { title: "Personnaliser", desc: "Notre équipe adapte l'application à votre métier" },
-      { title: "Déployer", desc: "Livraison, formation et mise en production" },
+      {
+        title: "Découverte",
+        desc: "Explorez le catalogue et validez vos besoins grâce aux démos interactives.",
+      },
+      {
+        title: "Cadrage",
+        desc: "Définissez votre projet via le configurateur et recevez un devis personnalisé.",
+      },
+      {
+        title: "Conception",
+        desc: "Notre équipe adapte l'application à vos processus et à votre organisation.",
+      },
+      {
+        title: "Déploiement",
+        desc: "Livraison, formation utilisateurs et accompagnement à la mise en ligne.",
+      },
     ],
     ctaFinalTitle: "Prêt à digitaliser votre activité ?",
     ctaFinalSubtitle: "Commencez par un aperçu gratuit, sans engagement.",
@@ -156,7 +186,7 @@ export const dictionary: Dictionary = {
     successTitle: "Commande envoyée !",
     successMessage:
       "Nous avons bien reçu votre demande pour {name}. Un conseiller vous contactera sous 24h pour finaliser votre projet.",
-    errorSubmit: "Envoi impossible. Réessayez ou contactez-nous à contact@tamrix.fr",
+    errorSubmit: "Envoi impossible. Réessayez ou contactez-nous à contact@tmrix.com",
   },
   footer: {
     tagline:
@@ -240,7 +270,7 @@ export const dictionary: Dictionary = {
         {
           title: "Éditeur du site",
           paragraphs: [
-            "Tamrix — contact@tamrix.fr",
+            "Tamrix — contact@tmrix.com",
             "Site édité par Tamrix, plateforme de commande d'applications métier.",
           ],
         },
@@ -279,7 +309,7 @@ export const dictionary: Dictionary = {
         {
           title: "Vos droits",
           paragraphs: [
-            "Vous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à contact@tamrix.fr.",
+            "Vous pouvez demander l'accès, la rectification ou la suppression de vos données en écrivant à contact@tmrix.com.",
           ],
         },
         {
@@ -297,7 +327,7 @@ export const dictionary: Dictionary = {
     preview: "Aperçu",
     order: "Commander",
     getQuote: "Obtenir un devis",
-    submitError: "Envoi impossible. Réessayez ou contactez-nous à contact@tamrix.fr",
+    submitError: "Envoi impossible. Réessayez ou contactez-nous à contact@tmrix.com",
   },
   categories: {
     gestion: "Gestion",

@@ -8,7 +8,7 @@ export function OrganizationJsonLd() {
     name: "Tamrix",
     url: base,
     logo: `${base}/logo.png`,
-    email: "contact@tamrix.fr",
+    email: "contact@tmrix.com",
     description:
       "Applications métier professionnelles avec aperçu interactif avant commande.",
   };

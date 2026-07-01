@@ -123,7 +123,7 @@ export const configurateurFr: ConfiguratorDictionary = {
     successTitle: "Cahier des charges envoyé !",
     successMessage:
       "Merci {name}. Notre équipe analyse votre projet et vous enverra un devis adapté à votre cahier des charges sous 48h.",
-    errorSubmit: "Envoi impossible. Réessayez ou contactez-nous à contact@tamrix.fr",
+    errorSubmit: "Envoi impossible. Réessayez ou contactez-nous à contact@tmrix.com",
     downloadPdf: "Télécharger le PDF",
     draftRestored: "Brouillon restauré — vous pouvez reprendre où vous en étiez.",
     clearDraft: "Effacer le brouillon",

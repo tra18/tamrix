@@ -122,7 +122,7 @@ export const configurateurEn: ConfiguratorDictionary = {
     successTitle: "Requirements submitted!",
     successMessage:
       "Thank you {name}. Our team is reviewing your project and will send a quote tailored to your requirements within 48 hours.",
-    errorSubmit: "Submission failed. Please try again or email contact@tamrix.fr",
+    errorSubmit: "Submission failed. Please try again or email contact@tmrix.com",
     downloadPdf: "Download PDF",
     draftRestored: "Draft restored — you can continue where you left off.",
     clearDraft: "Clear draft",

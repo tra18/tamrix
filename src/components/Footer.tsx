@@ -61,10 +61,10 @@ export function Footer({ locale, dict }: FooterProps) {
               <ul className="mt-4 space-y-2.5 text-sm text-tamrix-muted">
                 <li>
                   <a
-                    href="mailto:contact@tamrix.fr"
+                    href="mailto:contact@tmrix.com"
                     className="transition hover:text-brand-300"
                   >
-                    contact@tamrix.fr
+                    contact@tmrix.com
                   </a>
                 </li>
               </ul>

@@ -1,0 +1,49 @@
+# Production — Infomaniak VPS (ou tout serveur avec Docker)
+#
+# Usage:
+#   cp .env.example .env   # puis éditez les valeurs
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# L'app écoute sur 127.0.0.1:3000 — placez Nginx devant (voir deploy/nginx/).
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: tamrix-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tamrix
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}
+      POSTGRES_DB: tamrix
+    volumes:
+      - tamrix_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tamrix -d tamrix"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - tamrix
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tamrix-app
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://tamrix:${POSTGRES_PASSWORD}@db:5432/tamrix?schema=public
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - tamrix
+
+volumes:
+  tamrix_pg_data:
+
+networks:
+  tamrix:
